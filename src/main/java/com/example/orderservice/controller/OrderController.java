@@ -2,6 +2,7 @@ package com.example.orderservice.controller;
 
 
 import com.example.orderservice.domain.OrderEntity;
+import com.example.orderservice.messagequeue.KafkaProducer;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.OrderDto;
 import com.example.orderservice.vo.RequestOrder;
@@ -24,6 +25,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final KafkaProducer kafkaProducer;
     private Environment env;
 
     @GetMapping("/health_check")
@@ -40,6 +42,9 @@ public class OrderController {
         OrderDto createOrder = orderService.createOrder(orderDto);
 
         ResponseOrder responseUser = mapper.map(createOrder, ResponseOrder.class);
+
+        /* send this oder to the kafka*/
+        kafkaProducer.send("example-catalog-topic",orderDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
