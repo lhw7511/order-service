@@ -56,7 +56,7 @@ public class OrderController {
 //        orderDto.setTotalPrice(order.getQty() * order.getUnitPrice());
 
         /* send this oder to the kafka*/
-//        kafkaProducer.send("example-catalog-topic",orderDto);
+        kafkaProducer.send("example-catalog-topic",orderDto);
 //        orderProducer.send("orders",orderDto);
 //        ResponseOrder responseUser = mapper.map(orderDto, ResponseOrder.class);
         log.info("Add added orders data");
